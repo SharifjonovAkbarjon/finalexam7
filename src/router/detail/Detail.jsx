@@ -7,11 +7,17 @@ import { IoIosArchive } from "react-icons/io";
 import star from '../../assets/star.svg'
 import Counter from '../../components/counter/Counter';
 import { FaRegHeart } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../context/cart-slice';
+import ProductList from '../product/Product';
 
 
 const Detail = () => {
     const { id } = useParams();
     const { data } = useGetProductByIdQuery(id);
+
+
+    const dispatch = useDispatch()
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -61,7 +67,7 @@ const Detail = () => {
                             <div className='w-full h-[1px] border-dashed border-black border-[2px] mb-[10px] '></div>
                             <Counter />
                             <div className='flex items-center gap-[17px]'>
-                                <button className='flex gap-[10px] bg-[rgb(11,164,45)] items-center mt-[10px] text-white text-[22px] font-medium rounded-[10px] px-[103px] py-[16px]'><IoCartOutline /> Add to Cart </button>
+                                <button onClick={() => dispatch(addToCart(data))} className='flex gap-[10px] bg-[rgb(11,164,45)] items-center mt-[10px] text-white text-[22px] font-medium rounded-[10px] px-[103px] py-[16px]'><IoCartOutline /> Add to Cart </button>
                                 <div className='border-[3px] rounded-[10px] border-[rgb(13,38,18)] p-[20px] mt-2'>
                                     <FaRegHeart className='' />
                                 </div>
