@@ -1,0 +1,28 @@
+.Header {
+    background: rgba(13, 38, 19, 1);
+    // background: yellow;
+    padding: 19px;
+}
+
+.head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+ul {
+    display: flex;
+    gap: 40px;
+
+    li {
+        display: flex;
+        font-family: Inter;
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 19.36px;
+        text-align: left;
+        color: rgba(13, 38, 18, 1);
+        cursor: pointer;
+    }
+}
+
