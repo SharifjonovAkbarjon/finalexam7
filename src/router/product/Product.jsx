@@ -3,9 +3,13 @@ import { useGetProductQuery } from '../../context/api/product-api';
 import Hero from '../../components/hero/Hero';
 import { IoCartOutline } from "react-icons/io5";
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../context/cart-slice';
 
 const ProductList = () => {
-    const { data: products = [], error, isLoading } = useGetProductQuery();
+    const { data: products, error, isLoading } = useGetProductQuery();
+    const dispatch = useDispatch()
+    
 
     if (isLoading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
@@ -27,7 +31,7 @@ const ProductList = () => {
                     ))}
                 </div>
                 <p className='font-bold text-[21px]'>$ {product.price}</p>
-                <button className='flex gap-[10px] bg-[rgb(11,164,45)] items-center mt-[10px] text-white text-[22px] font-medium rounded-[10px] px-[33px] py-[16px]'><IoCartOutline /> Add to Cart </button>
+                <button onClick={()=> dispatch(addToCart(product))} className='flex gap-[10px] bg-[rgb(11,164,45)] items-center mt-[10px] text-white text-[22px] font-medium rounded-[10px] px-[33px] py-[16px]'><IoCartOutline /> Add to Cart </button>
             </div>
         </div>
     ));
