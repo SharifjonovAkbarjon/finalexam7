@@ -12,11 +12,29 @@ export const api = createApi({
             }),
             providesTags: ["Product"],
         }),
+        getCategory: build.query({
+            query: (query) => ({
+              url: `/products?${query}`,
+            }),
+            providesTags: ["Products"],
+          }),
         getProductById: build.query({
             query: (id) => ({
                 url: `/products/${id}`,
             }),
             providesTags: ["Product"],
+        }),
+         getBrands: build.query({
+            query: (params) => ({
+                url: "/brands",
+                params,
+            }),
+        }),
+        getColors: build.query({
+            query: (params) => ({
+                url: "/colors",
+                params,
+            }),
         }),
         createProduct: build.mutation({
             query: (body) => ({
@@ -50,4 +68,7 @@ export const {
     useDeleteProductMutation,
     useGetProductQuery,
     useGetProductByIdQuery,
+    useGetColorsQuery,
+    useGetBrandsQuery,
+    useGetCategoryQuery,
 } = api;

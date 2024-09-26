@@ -5,6 +5,8 @@ import { IoCartOutline } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../context/cart-slice';
+import Brand from '../../components/brand/Brand';
+
 
 const ProductList = () => {
     const { data: products, error, isLoading } = useGetProductQuery();
@@ -15,15 +17,15 @@ const ProductList = () => {
     if (error) return <p>Error: {error.message}</p>;
 
     const laylo = products.map(product => (
-        <div key={product.id} className='max-w-[300px] h-[603px] flex flex-col gap-[22px] '>
-            <div className='flex justify-center w-[300px] h-[300px] '>
-                <img src={product.image_url} alt={product.name} className='object-contain  p-[10px]' />
+        <div key={product.id} className='max-w-[300px] h-[603px] flex flex-col gap-[15px] '>
+            <div className='flex justify-center  w-[300px] h-[300px] '>
+                <img src={product.image_url} alt={product.name} className='mr-[20px] object-contain  p-[20px]' />
             </div>
             <div className='flex flex-col gap-[12px] pr-[30px] px-[10px]'>
                 <Link to={`/product/${product.id}`}>
                     <p className='text-[20px] text-[rgb(25,13,38) font-bold]'>{product.name}</p>
                 </Link>
-                <p className='text-[16px] text-[rgb(25,13,38) '>{product.description}</p>
+                <p className='text-[15px] text-[rgb(25,13,38) '>{product.description}</p>
                 <div className='flex gap-[12px] mt-[32px] mb-[12px]'>
                     {product.color_options.map((color, index) => (
                         <p key={index} className='w-[30px] h-[30px] border  rounded-[50%]' style={{ backgroundColor: color }}>
@@ -31,7 +33,7 @@ const ProductList = () => {
                     ))}
                 </div>
                 <p className='font-bold text-[21px]'>$ {product.price}</p>
-                <button onClick={()=> dispatch(addToCart(product))} className='flex gap-[10px] bg-[rgb(11,164,45)] items-center mt-[10px] text-white text-[22px] font-medium rounded-[10px] px-[33px] py-[16px]'><IoCartOutline /> Add to Cart </button>
+                <button onClick={() => dispatch(addToCart(product))} className='flex gap-[10px] bg-[rgb(11,164,45)] items-center mt-[10px] text-white text-[22px] font-medium rounded-[10px] px-[33px] py-[16px]'><IoCartOutline /> Add to Cart </button>
             </div>
         </div>
     ));
@@ -50,11 +52,24 @@ const ProductList = () => {
                 </div>
 
             </div>
-            <div className="grid grid-cols-3 gap-[68px]  container ">
-                {laylo}
+            <div className='flex  container'>
+                <div className='w-[280px] '>
+                    <Brand/>
+                </div>
+                <div className="grid grid-cols-3  gap-[10px]  ">
+                    {laylo}
+                </div>
+
             </div>
+            <div>
+                
+            </div>
+
         </div>
     );
 };
 
 export default ProductList;
+
+
+

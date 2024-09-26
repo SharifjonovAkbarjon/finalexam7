@@ -18,9 +18,9 @@ const cartSlice = createSlice({
 			}
 			localStorage.setItem("cart", JSON.stringify(state.value));
 		},
-		removeFromCart: (state, action) => {
-			state.value = state.value.filter(i => i._id !== action.payload);
-			localStorage.setItem("cart", JSON.stringify(state.value));
+		removeFromCart: (state, action) => {			
+			const StoreData = state.value.filter(i => i.id !== action.payload.id);
+			localStorage.setItem("cart", JSON.stringify(StoreData));
 		},
 		decrementCart: (state, action) => {
 			let index = state.value.findIndex(i => i === action.payload);
