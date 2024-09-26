@@ -1,23 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FaArrowLeftLong, FaMinus, FaPlus } from "react-icons/fa6";
 import { useSelector, useDispatch } from 'react-redux';
-import { removeFromCart } from '../../context/cart-slice';
+import { addToCart, removeFromCart } from '../../context/cart-slice';
 import { HiOutlineXMark } from 'react-icons/hi2';
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart.value);
   const dispatch = useDispatch();
 
+  const [quantities, setQuantities] = useState(
+    cart.reduce((acc, item) => {
+      acc[item.id] = item.quantity; 
+      return acc;
+    }, {})
+  );
+
   const increment = (id) => {
-    dispatch(addToCart({ id })); // Adjust this based on how you add items
+    setQuantities((prev) => ({ ...prev, [id]: prev[id] + 1 }));
   };
 
-  const decrement = (item) => {
-    if (item.quantity > 1) {
-      dispatch(decrementCart(item)); // Assuming you have a decrementCart action that decrements the quantity
+  const decrement = (id) => {
+    if (quantities[id] > 1) {
+      setQuantities((prev) => ({ ...prev, [id]: prev[id] - 1 })); 
     } else {
-      dispatch(removeFromCart(item));
+      dispatch(removeFromCart(cart.find(item => item.id === id))); 
     }
   };
 
@@ -70,11 +77,11 @@ const Cart = () => {
                       </div>
                       <div className='ml-[50px] flex items-center gap-[10px]'>
                         <div className='flex items-center bg-[rgb(245,245,245)] w-[100px] justify-center gap-2 py-[5px] rounded-[20px]'>
-                          <button onClick={() => decrement(item)} disabled={item.quantity <= 1}><FaMinus /></button>
-                          <h1>{item.quantity}</h1>
+                          <button onClick={() => decrement(item.id)} disabled={quantities[item.id] <= 1}><FaMinus /></button>
+                          <h1>{quantities[item.id]}</h1>
                           <button onClick={() => increment(item.id)}><FaPlus /></button>
                         </div>
-                        <p className='text-[24px] font-bold ml-[10px]'>$ {item.price}</p>
+                        <p className='text-[24px] font-bold ml-[10px]'>$ {item.price * quantities[item.id]}</p>
                       </div>
                     </div>
                   </li>
@@ -102,14 +109,18 @@ const Cart = () => {
               </div>
               <div className='flex items-center justify-between'>
                 <p className='text-[18px]'>Subtotal</p>
-                <p className='text-[18px] font-bold'>$0</p>
+                <p className='text-[18px] font-bold'>
+                  ${cart.reduce((total, item) => total + (item.price * quantities[item.id]), 0).toFixed(2)}
+                </p>
               </div>
             </div>
             <div className='w-full h-[1px] border bg-black opacity-25 border-dashed'></div>
             <div className='flex flex-col gap-[46px]'>
               <div className='flex items-center justify-between'>
                 <p className='text-[18px] font-bold'>Total</p>
-                <p className='text-[18px] font-bold'>$0</p>
+                <p className='text-[18px] font-bold'>
+                  ${cart.reduce((total, item) => total + (item.price * quantities[item.id]), 0).toFixed(2)}
+                </p>
               </div>
               <div>
                 <button className='bg-[rgb(11,164,45)] w-full mt-[25px] text-white text-[18px] py-[16px] rounded-[10px]'>
